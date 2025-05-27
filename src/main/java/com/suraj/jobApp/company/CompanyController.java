@@ -46,4 +46,14 @@ public class CompanyController {
             return new ResponseEntity<>("Company not found", HttpStatus.NOT_FOUND);
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteCompany(@PathVariable Long id){
+        Boolean delete = companyService.deleteCompany(id);
+        if(delete){
+            return new ResponseEntity<>("Company deleted successfully", HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>("Company deleted successfully", HttpStatus.NOT_FOUND);
+        }
+    }
 }
