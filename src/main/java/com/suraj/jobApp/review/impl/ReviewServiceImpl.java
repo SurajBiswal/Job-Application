@@ -1,5 +1,7 @@
 package com.suraj.jobApp.review.impl;
 
+import com.suraj.jobApp.company.Company;
+import com.suraj.jobApp.company.CompanyService;
 import com.suraj.jobApp.review.Review;
 import com.suraj.jobApp.review.ReviewRepository;
 import com.suraj.jobApp.review.ReviewService;
@@ -11,20 +13,29 @@ import java.util.Optional;
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
-    ReviewRepository reviewRepository;
+    private ReviewRepository reviewRepository;
+    private CompanyService companyService;
 
-    public ReviewServiceImpl(ReviewRepository reviewRepository) {
+    public ReviewServiceImpl(ReviewRepository reviewRepository, CompanyService companyService) {
         this.reviewRepository = reviewRepository;
+        this.companyService = companyService;
     }
 
     @Override
-    public List<Review> findAll() {
-        return reviewRepository.findAll();
+    public List<Review> getAllReviews(Long companyId) {
+        List<Review>reviews =  reviewRepository.findByCompanyId(companyId);
+        return reviews;
     }
 
     @Override
-    public void createReview(Review review) {
-        reviewRepository.save(review);
+    public Boolean createReview(Long companyId ,Review review) {
+        Company company = companyService.getCompanyById(companyId);
+        if(company!=null){
+            review.setCompany(company);
+            reviewRepository.save(review);
+            return true;
+        }
+        return false;
     }
 
     @Override

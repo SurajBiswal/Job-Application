@@ -58,4 +58,12 @@ public class Company {
     public void setJobs(List<Job> jobs) {
         this.jobs = jobs;
     }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
 }

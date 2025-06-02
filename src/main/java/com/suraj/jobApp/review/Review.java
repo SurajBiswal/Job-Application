@@ -1,13 +1,19 @@
 package com.suraj.jobApp.review;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.suraj.jobApp.company.Company;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
+@Entity
 public class Review {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String description;
     private double rating;
+
+    @JsonIgnore
     @ManyToOne
     private Company company;
 

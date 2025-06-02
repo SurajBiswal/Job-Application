@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/companies/{companyId}/reviews")
+@RequestMapping("/companies/{companyId}")
 public class ReviewController {
 
     private List<Review> reviews = new ArrayList<>();
@@ -18,15 +18,19 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<Review>> getAllReviews(){
-        return new ResponseEntity<>(reviewService.findAll(), HttpStatus.OK);
+    @GetMapping("/reviews")
+    public ResponseEntity<List<Review>> getAllReviews(@PathVariable Long id) {
+        return new ResponseEntity<>(reviewService.getAllReviews(id), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<String> createReview(@RequestBody Review review){
-        reviewService.createReview(review);
-        return new ResponseEntity<>("Review created successfully ", HttpStatus.CREATED);
+    @PostMapping("/reviews")
+    public ResponseEntity<String> createReview(@PathVariable Long companyId,@RequestBody Review review){
+        boolean isReviewSaved = reviewService.createReview(companyId, review);
+        if(isReviewSaved){
+            return new ResponseEntity<>("Review created", HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("Review not saved", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/{id}")
