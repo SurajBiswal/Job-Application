@@ -1,4 +1,10 @@
 package com.suraj.jobApp.review;
+import java.util.List;
 
-public class ReviewService {
+public interface ReviewService {
+    List<Review> findAll();
+    void createReview(Review review);
+    Review getReviewById(Long id);
+    Boolean deleteReviewById(Long id);
+    Boolean updateReviewById(Long id, Review updatedReview);
 }

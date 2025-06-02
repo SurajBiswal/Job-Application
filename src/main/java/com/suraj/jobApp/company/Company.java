@@ -2,6 +2,7 @@ package com.suraj.jobApp.company;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.suraj.jobApp.job.Job;
+import com.suraj.jobApp.review.Review;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -18,6 +19,10 @@ public class Company {
     @JsonIgnore
     @OneToMany(mappedBy = "company")
     private List<Job> jobs;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "company")
+    private List<Review> reviews;
 
     public Company() {
     }
