@@ -28,7 +28,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Boolean createReview(Long companyId ,Review review) {
+    public boolean createReview(Long companyId ,Review review) {
         Company company = companyService.getCompanyById(companyId);
         if(company!=null){
             review.setCompany(company);
@@ -39,32 +39,48 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Review getReviewById(Long id) {
-        return reviewRepository.findById(id).orElse(null);
+    public Review getReviewById(Long companyId, Long reviewId) {
+        List<Review> reviews = reviewRepository.findByCompanyId(companyId);
+        return reviews.stream()
+                .filter(review -> review.getId().equals(reviewId))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
-    public Boolean deleteReviewById(Long id) {
-        try {
-            reviewRepository.deleteById(id);
-            return true;
-        }catch (Exception e){
-            return false;
-        }
+    public boolean deleteReviewById(Long companyId, Long reviewId) {
+        List<Review> reviews = reviewRepository.findByCompanyId(companyId);
+
+        return reviews.stream()
+                .filter(review -> review.getId().equals(reviewId))
+                .findFirst()
+                .map(review -> {
+                    reviewRepository.deleteReviewById(review.getId());
+                    return true;
+                })
+                .orElse(false);
     }
 
+
     @Override
-    public Boolean updateReviewById(Long id, Review updatedReview) {
-        Optional<Review>reviewOptional = reviewRepository.findById(id);
-        if(reviewOptional.isPresent()){
-            Review review = reviewOptional.get();
-            review.setTitle(updatedReview.getTitle());
-            review.setRating(updatedReview.getRating());
-            review.setCompany(updatedReview.getCompany());
-            review.setDescription(updatedReview.getDescription());
-            reviewRepository.save(review);
+    public boolean updateReviewById(Long companyId, Long reviewId, Review updatedReview) {
+        List<Review> reviews = reviewRepository.findByCompanyId(companyId);
+
+        Optional<Review> reviewOptional = reviews.stream()
+                .filter(review -> review.getId().equals(reviewId))
+                .findFirst();
+
+        if (reviewOptional.isPresent()) {
+            Review existingReview = reviewOptional.get();
+            existingReview.setTitle(updatedReview.getTitle());
+            existingReview.setRating(updatedReview.getRating());
+            existingReview.setCompany(updatedReview.getCompany());
+            existingReview.setDescription(updatedReview.getDescription());
+            reviewRepository.save(existingReview);
             return true;
         }
+
         return false;
     }
+
 }

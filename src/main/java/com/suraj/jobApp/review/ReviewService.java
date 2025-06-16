@@ -3,8 +3,13 @@ import java.util.List;
 
 public interface ReviewService {
     List<Review> getAllReviews(Long companyId);
-    Boolean createReview(Long companyId ,Review review);
-    Review getReviewById(Long id);
-    Boolean deleteReviewById(Long id);
-    Boolean updateReviewById(Long id, Review updatedReview);
+    boolean createReview(Long companyId ,Review review);
+
+    Review getReviewById(Long companyId, Long reviewId);
+
+    boolean deleteReviewById(Long companyId, Long reviewId);
+
+    boolean updateReviewById(Long companyId, Long reviewId, Review review);
+
+    boolean deleteReview(Long companyId, Long reviewId);
 }

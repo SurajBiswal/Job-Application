@@ -1,6 +1,7 @@
 package com.suraj.jobApp.review;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.suraj.jobApp.company.Company;
 import jakarta.persistence.*;
 
@@ -13,7 +14,8 @@ public class Review {
     private String description;
     private double rating;
 
-    @JsonIgnore
+//    @JsonIgnore
+    @JsonIgnoreProperties({"jobs", "reviews"}) // To avoid recursion
     @ManyToOne
     private Company company;
 

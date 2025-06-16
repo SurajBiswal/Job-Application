@@ -1,5 +1,6 @@
 package com.suraj.jobApp.job;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.suraj.jobApp.company.Company;
 import jakarta.persistence.*;
 
@@ -15,6 +16,7 @@ public class Job {
     private String maxSalary;
     private String location;
 
+    @JsonIgnoreProperties("jobs") // Prevents infinite loop during JSON serialization
     @ManyToOne
     private Company company;
 
